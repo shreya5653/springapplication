@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Edit Farmer</title>
+</head>
+<body>
+<h1>Edit Farmer</h1>
+<form th:action="@{/farmers/{id}(id=${farmer.id})}" th:object="${farmer}" method="post">
+    <label for="fname">Name:</label>
+    <input type="text" id="fname" th:field="*{fname}" required>
+
+    <label for="username">Username:</label>
+    <input type="text" id="username" th:field="*{username}" required>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" th:field="*{password}" required>
+
+    <button type="submit">Update Farmer</button>
+</form>
+<a th:href="@{/farmers}">Back to List</a>
+<script src="script.js"></script>
+</body>
+</html>

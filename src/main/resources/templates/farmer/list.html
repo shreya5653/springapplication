@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Farmers List</title>
+</head>
+<body>
+<h1>Farmers</h1>
+<a th:href="@{/farmers/new}">Add New Farmer</a>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Actions</th>
+        <th>Workers</th> <!-- New column for Workers -->
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="farmer : ${farmers}">
+        <td th:text="${farmer.id}"></td>
+        <td th:text="${farmer.fname}"></td>
+        <td th:text="${farmer.username}"></td>
+        <td>
+            <a th:href="@{/farmers/{id}/edit(id=${farmer.id})}">Edit</a>
+            <a th:href="@{/farmers/{id}/delete(id=${farmer.id})}">Delete</a>
+        </td>
+        <td>
+            <a th:href="@{/workers?farmerId={id}(id=${farmer.id})}">View Workers</a> <!-- Link to worker list -->
+        </td>
+    </tr>
+    </tbody>
+</table>
+<script src="script.js"></script>
+</body>
+</html>
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <title>Farmers List</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Farmers</h1>-->
+<!--<a th:href="@{/farmers/new}">Add New Farmer</a>-->
+<!--<table>-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--        <th>ID</th>-->
+<!--        <th>Name</th>-->
+<!--        <th>Username</th>-->
+<!--        <th>Actions</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    <tr th:each="farmer : ${farmers}">-->
+<!--        <td th:text="${farmer.id}"></td>-->
+<!--        <td th:text="${farmer.fname}"></td>-->
+<!--        <td th:text="${farmer.username}"></td>-->
+<!--        <td>-->
+<!--            <a th:href="@{/farmers/{id}/edit(id=${farmer.id})}">Edit</a>-->
+<!--            <a th:href="@{/farmers/{id}/delete(id=${farmer.id})}">Delete</a>-->
+<!--        </td>-->
+<!--    </tr>-->
+<!--    </tbody>-->
+<!--</table>-->
+<!--</body>-->
+<!--</html>-->

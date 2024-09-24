@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Wages for Worker</title>
+</head>
+<body>
+<h1>Wages for Worker ID: <span th:text="${workerId}"></span></h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Wage Amount</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="wage : ${wages}">
+        <td th:text="${wage.date}"></td>
+        <td th:text="${wage.wageAmount}"></td>
+        <td>
+            <a th:href="@{/wages/edit(workerId=${workerId}, date=${wage.date})}">Edit</a>
+            <a th:href="@{/wages/{id}/delete(id=${wage.id})}" th:onclick="return confirm('Are you sure you want to delete this wage?');">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/wages/new(workerId=${workerId})}">Add New Wage</a>
+<script src="script.js"></script>
+</body>
+</html>

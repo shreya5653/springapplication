@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Error</title>
+</head>
+<body>
+<h1>Error</h1>
+<p th:text="${error}"></p>
+<a th:href="@{/wages}">Back to Wages</a>
+<script src="script.js"></script>
+</body>
+</html>

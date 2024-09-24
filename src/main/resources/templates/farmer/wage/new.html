@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Add New Wage</title>
+</head>
+<body>
+<h1>Add New Wage</h1>
+
+<form action="#" th:action="@{/wages}" th:object="${wage}" method="post">
+    <label for="worker">Select Worker:</label>
+    <select id="worker" th:field="*{worker}" required>
+        <option th:each="worker : ${workers}"
+                th:value="${worker.id}"
+                th:text="${worker.name}"></option>
+    </select>
+
+    <label for="wageAmount">Wage Amount:</label>
+    <input id="wageAmount" type="number" th:field="*{wageAmount}" required />
+
+    <label for="date">Date:</label>
+    <input id="date" type="date" th:field="*{date}" required />
+
+    <button type="submit">Save Wage</button>
+</form>
+
+<a th:href="@{/wages?workerId=${wage.worker.id}}">Back to Wages</a>
+<script src="script.js"></script>
+</body>
+</html>
