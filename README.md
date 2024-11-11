@@ -11,7 +11,7 @@ Farmers Finance Management System is a targeted solution designed to help farmer
 ## Technologies Used
 
 - Backend: Java (Spring Boot)
-- Frontend: React (or any other applicable frontend technology)
-- Database: MySQL (or another relational database)
+- Frontend: React 
+- Database: MySQL 
 - APIs: RESTful APIs for data handling between frontend and backend
 - Tools: Postman for API testing, Git for version control
