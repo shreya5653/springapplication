@@ -1,9 +1,14 @@
 .navbar {
+  margin: 0.5%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background-color: #333;
+  background: #6a8e2388;
+  position: absolute;
+  z-index: 2;
+  width: 96.5%;
+  border-radius: 20px;
 }
 
 .navbar a {
