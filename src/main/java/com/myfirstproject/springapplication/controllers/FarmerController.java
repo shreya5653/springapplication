@@ -3,52 +3,42 @@ package com.myfirstproject.springapplication.controllers;
 import com.myfirstproject.springapplication.entity.Farmer;
 import com.myfirstproject.springapplication.serviveLayer.FarmerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 
-@Controller
-@RequestMapping("/farmers")
+@RestController
+@RequestMapping("/api/farmer")
 public class FarmerController {
 
     @Autowired
     private FarmerService farmerService;
 
-    @GetMapping
-    public String listFarmers(Model model) {
-        model.addAttribute("farmers", farmerService.getAllFarmers());
-        return "farmer/list";  // Thymeleaf template path
+    @PostMapping("/signup")
+    public ResponseEntity<String> register(@RequestBody Farmer farmer) {
+        String response = farmerService.register(farmer);
+
+        switch (response) {
+            case "User registered successfully":
+                return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            case "Email already registered":
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            case "Invalid email format":
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            default:
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+        }
     }
 
-    @GetMapping("/new")
-    public String showNewFarmerForm(Model model) {
-        model.addAttribute("farmer", new Farmer());
-        return "farmer/new";  // Thymeleaf template path
-    }
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
+        String response = farmerService.login(username, password);
 
-    @PostMapping
-    public String saveFarmer(@ModelAttribute Farmer farmer) {
-        farmerService.saveFarmer(farmer);
-        return "redirect:/farmers";
-    }
-
-    @GetMapping("/{id}/edit")
-    public String showEditFarmerForm(@PathVariable Long id, Model model) {
-        model.addAttribute("farmer", farmerService.getFarmerById(id).orElse(null));
-        return "farmer/edit";  // Thymeleaf template path
-    }
-
-    @PostMapping("/{id}")
-    public String updateFarmer(@PathVariable Long id, @ModelAttribute Farmer farmer) {
-        farmer.setId(id);
-        farmerService.saveFarmer(farmer);
-        return "redirect:/farmers";
-    }
-
-    @GetMapping("/{id}/delete")
-    public String deleteFarmer(@PathVariable Long id) {
-        farmerService.deleteFarmer(id);
-        return "redirect:/farmers";
+        if (response.equals("Login successful")) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
     }
 }
 
