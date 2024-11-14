@@ -1,0 +1,25 @@
+/* src/components/ProfileDetails.css */
+
+.profile-details {
+  max-width: 400px;
+  margin: auto;
+  padding: 1.5rem;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.profile-details h2 {
+  text-align: center;
+  color: #333;
+}
+
+.profile-info p {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  color: #555;
+}
+
+.profile-info strong {
+  color: #333;
+}
