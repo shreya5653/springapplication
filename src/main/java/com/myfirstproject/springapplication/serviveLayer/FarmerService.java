@@ -4,9 +4,8 @@ import com.myfirstproject.springapplication.entity.Farmer;
 import com.myfirstproject.springapplication.repositories.FarmerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 public class FarmerService {
@@ -14,23 +13,27 @@ public class FarmerService {
     @Autowired
     private FarmerRepository farmerRepository;
 
-    // Get all farmers
-    public List<Farmer> getAllFarmers() {
-        return farmerRepository.findAll();
+    private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+
+    public String register(Farmer farmer) {
+        if (!isValidEmail(farmer.getEmail())) {
+            return "Invalid email format";
+        }
+
+        Optional<Farmer> existingFarmer = farmerRepository.findByEmail(farmer.getEmail());
+        if (existingFarmer.isPresent()) {
+            return "Email already registered";
+        }
+        farmerRepository.save(farmer);
+        return "User registered successfully";
     }
 
-    // Get farmer by ID
-    public Optional<Farmer> getFarmerById(Long id) {
-        return farmerRepository.findById(id);
+    public String login(String username, String password) {
+        Optional<Farmer> farmer = farmerRepository.findByUsernameAndPassword(username, password);
+        return farmer.isPresent() ? "Login successful" : "Invalid credentials";
     }
 
-    // Save or update farmer
-    public Farmer saveFarmer(Farmer farmer) {
-        return farmerRepository.save(farmer);
-    }
-
-    // Delete farmer by ID
-    public void deleteFarmer(Long id) {
-        farmerRepository.deleteById(id);
+    private boolean isValidEmail(String email) {
+        return Pattern.matches(EMAIL_REGEX, email);
     }
 }
