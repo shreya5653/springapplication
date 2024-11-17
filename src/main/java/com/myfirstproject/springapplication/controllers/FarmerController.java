@@ -16,30 +16,30 @@ public class FarmerController {
     private FarmerService farmerService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> register(@RequestBody Farmer farmer) {
-        String response = farmerService.register(farmer);
+    public ResponseEntity<?> register(@RequestBody Farmer farmer) {
+        try {
+            Farmer savedFarmer = farmerService.register(farmer);
 
-        switch (response) {
-            case "User registered successfully":
-                return ResponseEntity.status(HttpStatus.CREATED).body(response);
-            case "Email already registered":
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-            case "Invalid email format":
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-            default:
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+            // Return the farmer's profile as the response
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedFarmer);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
-        String response = farmerService.login(username, password);
+    public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
+        try {
+            Farmer loggedInFarmer = farmerService.login(username, password);
 
-        if (response.equals("Login successful")) {
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            // Return the farmer's profile upon successful login
+            return ResponseEntity.ok(loggedInFarmer);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
 }
-
