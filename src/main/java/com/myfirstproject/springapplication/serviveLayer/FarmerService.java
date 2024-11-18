@@ -5,7 +5,6 @@ import com.myfirstproject.springapplication.repositories.FarmerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 @Service
 public class FarmerService {
@@ -19,7 +18,6 @@ public class FarmerService {
         if (!isValidEmail(farmer.getEmail())) {
             throw new IllegalArgumentException("Invalid email format");
         }
-
         Optional<Farmer> existingFarmer = farmerRepository.findByEmail(farmer.getEmail());
         if (existingFarmer.isPresent()) {
             throw new IllegalStateException("Email already registered");
@@ -34,7 +32,15 @@ public class FarmerService {
         return farmer.orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
     }
 
+
     private boolean isValidEmail(String email) {
-        return Pattern.matches(EMAIL_REGEX, email);
+        return email.matches(EMAIL_REGEX);
     }
+
+    public Farmer getFarmerByUsername(String username) {
+        Optional<Farmer> farmer = farmerRepository.findByUsername(username);
+        System.out.println("Farmer found: " + (farmer.isPresent() ? farmer.toString() : "null"));
+        return farmer.orElse(null);
+    }
+
 }

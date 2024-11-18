@@ -16,18 +16,20 @@ public class FarmerController {
     private FarmerService farmerService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> register(@RequestBody Farmer farmer) {
-        try {
-            Farmer savedFarmer = farmerService.register(farmer);
 
-            // Return the farmer's profile as the response
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedFarmer);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (IllegalStateException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+    public ResponseEntity<String> register(@RequestBody Farmer farmer) {
+        String response = farmerService.register(farmer);
+
+        switch(response) {
+            case "User registered successfully":
+                return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            case "Email already registered":
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            case "Invalid email format":
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            default:
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+
         }
     }
 
@@ -42,4 +44,21 @@ public class FarmerController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
+
+
+    @GetMapping("/profile")
+    public ResponseEntity<?> getFarmerProfile(@RequestParam String username) {
+        if (username == null || username.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username is required");
+        }
+
+        Farmer farmer = farmerService.getFarmerByUsername(username);
+
+        if (farmer == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Farmer not found");
+        }
+        return ResponseEntity.ok(farmer); // Return the full farmer object (including email, username, etc.)
+    }
+
 }
+

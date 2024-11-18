@@ -19,38 +19,49 @@ export const register = async (userData) => {
     return await response.text(); // For successful response
   } catch (error) {
     console.error("Error during registration:", error.message || error);
-    throw error.message || "Registration failed"; // Return the error message
+    throw new Error(error.message || "Registration failed"); // Return the error message
   }
 };
 
 export const login = async (userData) => {
-  if (!userData || !userData.username || !userData.password) {
-    throw new Error("Missing username or password");
-  }
   try {
     const response = await axios.post(
       "http://localhost:8080/api/farmer/login",
       null,
       { params: { username: userData.username, password: userData.password } }
     );
-    console.log("login successfull ",response.data)
-    return response.data;
+
+    const token = response.data; // Assuming the response contains a token
+    localStorage.setItem("token", token); // Save token to localStorage
+    console.log("Login successful", token);
+    return token; // Return the token for further use
   } catch (error) {
-    console.error("Error during login:", error);
-    throw new Error("Login failed");
+    console.error("Error during login:", error.message || error);
+    throw new Error(error.response?.data || "Login failed");
   }
 };
 
-export const fetchProfile = async (token) => {
+export const fetchProfile = async () => {
   try {
-    const response = await axios.get(
-      `http://localhost:8080/api/farmer/profile`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    return response.data;
+    const token = localStorage.getItem("token");
+    const username = localStorage.getItem("username"); // Make sure username is set
+    
+    if (!username) {
+      throw new Error("Username not found");
+    }
+
+    const response = await axios.get(`http://localhost:8080/api/farmer/profile`, {
+      params: {
+        username: username, // Pass username as a query parameter
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("Profile data:", response.data);
+    return response.data; // Return the profile data
   } catch (error) {
-    throw error.response ? error.response.data : "Failed to fetch profile";
+    console.error("Error fetching profile:", error.message || error);
+    throw new Error(error.response?.data || "Error fetching profile");
   }
 };

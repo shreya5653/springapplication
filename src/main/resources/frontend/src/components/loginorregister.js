@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { login, register } from "../services/authService";
-// import { setToken } from "../utils/auth";
 import { useNavigate } from "react-router-dom";
 import "./loginorregister.css";
 
-const LoginOrRegister = ({ setIsLoggedIn }) => {
+const LoginOrRegister = ({ setIsLoggedIn, setProfile, setToken }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     username: "",
@@ -16,28 +15,48 @@ const LoginOrRegister = ({ setIsLoggedIn }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       if (isLogin) {
         const response = await login({
           username: formData.username,
           password: formData.password,
         });
-        setMessage("Login successful", response);
-        setIsLoggedIn(true);
-        navigate("/profile");
+
+        setMessage(
+          response === "Login successful"
+            ? response
+            : "Invalid credentials. Please try again."
+        );
+
+        if (response === "Login successful") {
+          localStorage.setItem("username", formData.username);
+          localStorage.setItem("token", response.token);
+          setMessage("Login successful");
+          setIsLoggedIn(true);
+          setToken(response.token);
+          setProfile(response.data);
+          navigate("/profile");
+        } else {
+          setMessage("Invalid credentials. Please try again.");
+        }
       } else {
         const response = await register({
           username: formData.username,
           password: formData.password,
           email: formData.email,
         });
-        setMessage(response);
-        setIsLogin(true);
+
+        setMessage(
+          typeof response === "string"
+            ? response
+            : "Registration failed. Try again."
+        );
+        if (response.includes("successful")) {
+          setIsLogin(true);
+        }
       }
     } catch (error) {
-      console.log("Error in handleSubmit:", error);
-      setMessage(error.message);
+      setMessage(error.message || "An error occurred.");
     }
   };
 
@@ -84,7 +103,6 @@ const LoginOrRegister = ({ setIsLoggedIn }) => {
             className="form-input"
             required
           />
-
           <button type="submit" className="form-button">
             {isLogin ? "Login" : "Register"}
           </button>

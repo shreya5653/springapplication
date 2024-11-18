@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface FarmerRepository extends JpaRepository<Farmer, Long> {
     Optional<Farmer> findByEmail(String email);
     Optional<Farmer> findByUsernameAndPassword(String username, String password);
+    Optional<Farmer> findByUsername(String username);
 }
