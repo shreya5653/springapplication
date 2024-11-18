@@ -1,42 +1,44 @@
 import React, { useEffect, useState } from "react";
-import "./Profilepage.css";
 import { fetchProfile } from "../services/authService";
+import "./Profilepage.css";
 
-const ProfilePage = () => {
+const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [error, setError] = useState("");
   const username = localStorage.getItem("username");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setError("No token found. Please login again.");
-      return;
-    }
-
-    const fetchData = async () => {
+    const fetchdata = async () => {
       try {
         const data = await fetchProfile(username);
         setProfile(data);
       } catch (err) {
-        setError(err.message || "Failed to fetch profile.");
+        setError(err.response?.data || "An error occurred while fetching profile.");
       }
     };
 
-    fetchData();
+    if (username) {
+      fetchdata();
+    } else {
+      setError("Username is missing. Please log in again.");
+    }
   }, [username]);
-
-  if (error) return <div>{error}</div>;
-  if (!profile) return <div>Loading profile...</div>;
 
   return (
     <div className="profile-container">
-      <h2>Profile</h2>
-      <p>Username: {profile.username}</p>
-      <p>Email: {profile.email}</p>
-      <p>Password: {profile.password}</p>
+      <h2>Profile Page</h2>
+      {error && <p style={{ color: "red" }}>Error: {error}</p>}
+      {profile ? (
+        <div>
+          <p><strong>Username:</strong> {profile.username}</p>
+          <p><strong>Email:</strong> {profile.email}</p>
+          <p><strong>Password:</strong> {profile.password}</p>
+        </div>
+      ) : (
+        <p>Loading profile...</p>
+      )}
     </div>
-  );
+  );  
 };
 
-export default ProfilePage;
+export default Profile;

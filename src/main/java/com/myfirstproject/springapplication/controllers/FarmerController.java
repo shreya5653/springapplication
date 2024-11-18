@@ -36,15 +36,16 @@ public class FarmerController {
         String response = farmerService.login(username, password);
 
         if (response.equals("Login successful")) {
-            return ResponseEntity.ok(response);  // You can send back a token if needed, for now it's a simple message.
+            return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
+
     @GetMapping("/profile")
     public ResponseEntity<?> getFarmerProfile(@RequestParam String username) {
-        if (username == null || username.trim().isEmpty()) {
-            return ResponseEntity.badRequest().body("Username is required");
+        if (username == null || username.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username is required");
         }
 
         Farmer farmer = farmerService.getFarmerByUsername(username);
@@ -52,7 +53,7 @@ public class FarmerController {
         if (farmer == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Farmer not found");
         }
-        return ResponseEntity.ok(farmer);
+        return ResponseEntity.ok(farmer); // Return the full farmer object (including email, username, etc.)
     }
 
 }

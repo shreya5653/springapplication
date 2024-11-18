@@ -5,7 +5,6 @@ import com.myfirstproject.springapplication.repositories.FarmerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 @Service
 public class FarmerService {
@@ -32,12 +31,15 @@ public class FarmerService {
         return farmer.isPresent() ? "Login successful" : "Invalid credentials";
     }
 
+
     private boolean isValidEmail(String email) {
-        return Pattern.matches(EMAIL_REGEX, email);
+        return email.matches(EMAIL_REGEX);
     }
 
     public Farmer getFarmerByUsername(String username) {
-            Optional<Farmer> farmer = farmerRepository.findByUsername(username);
-            return farmer.orElse(null);
+        Optional<Farmer> farmer = farmerRepository.findByUsername(username);
+        System.out.println("Farmer found: " + (farmer.isPresent() ? farmer.toString() : "null"));
+        return farmer.orElse(null);
     }
+
 }
