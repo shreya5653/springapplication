@@ -19,7 +19,7 @@ public class FarmerController {
     public ResponseEntity<String> register(@RequestBody Farmer farmer) {
         String response = farmerService.register(farmer);
 
-        switch (response) {
+        switch(response) {
             case "User registered successfully":
                 return ResponseEntity.status(HttpStatus.CREATED).body(response);
             case "Email already registered":
@@ -36,10 +36,23 @@ public class FarmerController {
         String response = farmerService.login(username, password);
 
         if (response.equals("Login successful")) {
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(response);  // You can send back a token if needed, for now it's a simple message.
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
-}
+    @GetMapping("/profile")
+    public ResponseEntity<?> getFarmerProfile(@RequestParam String username) {
+        if (username == null || username.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Username is required");
+        }
 
+        Farmer farmer = farmerService.getFarmerByUsername(username);
+
+        if (farmer == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Farmer not found");
+        }
+        return ResponseEntity.ok(farmer);
+    }
+
+}

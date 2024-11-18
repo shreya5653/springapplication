@@ -1,44 +1,42 @@
-// // src/pages/ProfilePage.js
-// import React, { useState } from 'react';
-// // import ProfileDetails from '../components/profiledetails';
+import React, { useEffect, useState } from "react";
+import "./Profilepage.css";
+import { fetchProfile } from "../services/authService";
 
-// function ProfilePage() {
-//   const [isAuthenticated, setIsAuthenticated] = useState(false);
-//   const [user, setUser] = useState(null);
+const ProfilePage = () => {
+  const [profile, setProfile] = useState(null);
+  const [error, setError] = useState("");
+  const username = localStorage.getItem("username");
 
-//   const handleAuthSuccess = (userData) => {
-//     setUser(userData);  
-//     setIsAuthenticated(true); 
-//   };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("No token found. Please login again.");
+      return;
+    }
 
-//   return (
-//     <div>
-//       {!isAuthenticated ? (
-//         <AuthForm onAuthSuccess={handleAuthSuccess} />
-//       ) : (
-//         <ProfileDetails 
-//           fullName={user.fullName} 
-//           email={user.email} 
-//           password={user.password} 
-//         />
-//       )}
+    const fetchData = async () => {
+      try {
+        const data = await fetchProfile(username);
+        setProfile(data);
+      } catch (err) {
+        setError(err.message || "Failed to fetch profile.");
+      }
+    };
 
-      
-//     </div>
-//   );
-// }
+    fetchData();
+  }, [username]);
 
-// export default ProfilePage;
+  if (error) return <div>{error}</div>;
+  if (!profile) return <div>Loading profile...</div>;
 
-import React from "react";
-
-function Profilepage (){
   return (
-    <div>
-      <h1>Welcome to Your Profile</h1>
-      <p>This is the profile page.</p>
+    <div className="profile-container">
+      <h2>Profile</h2>
+      <p>Username: {profile.username}</p>
+      <p>Email: {profile.email}</p>
+      <p>Password: {profile.password}</p>
     </div>
   );
 };
 
-export default Profilepage;
+export default ProfilePage;

@@ -1,5 +1,5 @@
 // src/App.js
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/navbar";
 import HomePage from "./pages/HomePage";
@@ -8,7 +8,8 @@ import LoginOrRegister from "./components/loginorregister";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const [Profile, setProfile] = useState(null);
+  const [token, setToken] = useState(null);
   return (
     <div>
       <Navbar />
@@ -18,7 +19,7 @@ function App() {
           path="/profile"
           element={
             isLoggedIn ? (
-              <ProfilePage />
+              <ProfilePage profile={Profile} token={token} />
             ) : (
               <Navigate to="/login-or-register" replace />
             )
@@ -26,7 +27,13 @@ function App() {
         />
         <Route
           path="/login-or-register"
-          element={<LoginOrRegister setIsLoggedIn={setIsLoggedIn} />}
+          element={
+            <LoginOrRegister
+              setIsLoggedIn={setIsLoggedIn}
+              setToken={setToken}
+              setProfile={setProfile}
+            />
+          }
         />
       </Routes>
     </div>

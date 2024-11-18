@@ -19,7 +19,6 @@ public class FarmerService {
         if (!isValidEmail(farmer.getEmail())) {
             return "Invalid email format";
         }
-
         Optional<Farmer> existingFarmer = farmerRepository.findByEmail(farmer.getEmail());
         if (existingFarmer.isPresent()) {
             return "Email already registered";
@@ -35,5 +34,10 @@ public class FarmerService {
 
     private boolean isValidEmail(String email) {
         return Pattern.matches(EMAIL_REGEX, email);
+    }
+
+    public Farmer getFarmerByUsername(String username) {
+            Optional<Farmer> farmer = farmerRepository.findByUsername(username);
+            return farmer.orElse(null);
     }
 }
