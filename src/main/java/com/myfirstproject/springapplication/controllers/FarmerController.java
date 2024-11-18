@@ -16,6 +16,7 @@ public class FarmerController {
     private FarmerService farmerService;
 
     @PostMapping("/signup")
+
     public ResponseEntity<String> register(@RequestBody Farmer farmer) {
         String response = farmerService.register(farmer);
 
@@ -28,19 +29,22 @@ public class FarmerController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             default:
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
-        String response = farmerService.login(username, password);
+    public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
+        try {
+            Farmer loggedInFarmer = farmerService.login(username, password);
 
-        if (response.equals("Login successful")) {
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            // Return the farmer's profile upon successful login
+            return ResponseEntity.ok(loggedInFarmer);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
+
 
     @GetMapping("/profile")
     public ResponseEntity<?> getFarmerProfile(@RequestParam String username) {
@@ -57,3 +61,4 @@ public class FarmerController {
     }
 
 }
+

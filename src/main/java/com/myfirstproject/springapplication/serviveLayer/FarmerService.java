@@ -14,21 +14,22 @@ public class FarmerService {
 
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 
-    public String register(Farmer farmer) {
+    public Farmer register(Farmer farmer) {
         if (!isValidEmail(farmer.getEmail())) {
-            return "Invalid email format";
+            throw new IllegalArgumentException("Invalid email format");
         }
         Optional<Farmer> existingFarmer = farmerRepository.findByEmail(farmer.getEmail());
         if (existingFarmer.isPresent()) {
-            return "Email already registered";
+            throw new IllegalStateException("Email already registered");
         }
-        farmerRepository.save(farmer);
-        return "User registered successfully";
+
+        // Save and return the saved farmer entity
+        return farmerRepository.save(farmer);
     }
 
-    public String login(String username, String password) {
+    public Farmer login(String username, String password) {
         Optional<Farmer> farmer = farmerRepository.findByUsernameAndPassword(username, password);
-        return farmer.isPresent() ? "Login successful" : "Invalid credentials";
+        return farmer.orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
     }
 
 
