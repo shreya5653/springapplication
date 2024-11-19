@@ -1,0 +1,61 @@
+/* WorkerUpdate.css */
+.worker-form {
+  width: 90%;
+  max-width: 500px;
+  margin: 10% 30%;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  position: absolute;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.worker-form h2 {
+  text-align: center;
+  margin-bottom: 5%;
+  font-size: 1.8em;
+  color: #333;
+}
+
+.worker-form input {
+  width: 90%;
+  padding: 12px;
+  margin-bottom: 25px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+.worker-form input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.worker-form .submit-btn {
+  width: 95%;
+  padding: 12px;
+  font-size: 1.2em;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.worker-form .submit-btn:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 600px) {
+  .worker-form {
+    padding: 15px;
+  }
+
+  .worker-form h2 {
+    font-size: 1.6em;
+  }
+
+  .worker-form .submit-btn {
+    font-size: 1.1em;
+  }
+}

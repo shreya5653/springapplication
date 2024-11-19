@@ -1,0 +1,97 @@
+/* WorkerList.css */
+.list {
+  width: 90%;
+  max-width: 800px;
+  margin: 8% 18%;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  position: absolute;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.list h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.8em;
+  color: #333;
+}
+
+.list button {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 10px 15px;
+  font-size: 1em;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.add{
+  background: linear-gradient(135deg,#a0c9f4, #7dbdf4, #60b0f4, #4a9bf2);
+}
+
+.list button:hover {
+  background-color: #0056b3;
+}
+
+.list table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.list th,
+.list td {
+  text-align: left;
+  padding: 10px 15px;
+  border: 1px solid #b6b5b598;
+}
+
+.list th {
+  background-color: #449cf9;
+  color: white;
+  font-weight: bold;
+}
+
+.list td {
+  color: #333;
+}
+
+.list tr:hover{
+  background-color: #eaf3ff;
+}
+.list .action-buttons {
+  display: flex;
+  gap: 3px;
+}
+
+.list .action-buttons button {
+  padding: 5px 10px;
+  margin: 1%;
+  font-size: 0.9em;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.list .action-buttons .update-button {
+  background-color: #60b0f4;
+  color: white;
+}
+
+.list .action-buttons .update-button:hover {
+  background-color: #218838;
+}
+
+.list .action-buttons .delete-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.list .action-buttons .delete-button:hover {
+  background-color: #c82333;
+}
+.view-wages-button{
+  background-color: #ee9644;
+}

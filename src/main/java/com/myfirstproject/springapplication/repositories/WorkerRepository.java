@@ -1,4 +1,10 @@
 package com.myfirstproject.springapplication.repositories;
 
-public interface WorkerRepository {
+import com.myfirstproject.springapplication.entity.Worker;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface WorkerRepository extends JpaRepository<Worker, Integer> {
+    List<Worker> findAllByOrderByLastNameAsc();
 }
