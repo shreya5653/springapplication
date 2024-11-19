@@ -1,4 +1,71 @@
-.profile-container{
-    margin: 20% 30%;
-    position: absolute;
+.profile-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 15% 25%;
+  position: absolute;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: "Arial", sans-serif;
+  text-align: center;
+}
+
+.profile-container h2 {
+  font-size: 32px;
+  color: #333;
+  margin-bottom: 20px;
+}
+.profile-container p {
+  /* text-align: left; */
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.profile-container strong {
+  color: #333;
+}
+.profile-container p.error {
+  color: red;
+  font-weight: bold;
+}
+.profile-container p.loading {
+  color: #888;
+  font-style: italic;
+}
+/* btn-worker-list */
+.btn-worker-list {
+  padding: 10px 20px;
+  background-color: #63a9ef; /* Green background */
+  color: white;
+  font-size: 1em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-worker-list:hover {
+  background-color: #0d3d73; /* Darker green on hover */
+}
+
+.btn-worker-list:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.5); /* Focus ring */
+}
+
+.btn-worker-list:active {
+  background-color: #1e7e34; /* Even darker green on click */
+}
+
+@media (max-width: 600px) {
+  .btn-worker-list {
+    padding: 12px 24px;
+    font-size: 1.1em; /* Slightly larger font on small screens */
+  }
 }
